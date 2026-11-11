@@ -86,7 +86,7 @@ SASMITA_RULES = [
         "id": 8,
         "name": "Open Elective Information Retrieval",
         "member": "Sasmita",
-        "pattern": r'\b(?:what are|which|explain|tell me about|list)?\s*(?:the\s*)?open electives?\b',
+        "pattern": r'\b(?:what\s+are|which|explain|tell\s+me\s+about|list|show|available)\s+(?:the\s*)?open\s+electives?\b|^\s*(?:the\s*)?open\s+electives?\s*$',
         "handler": handle_open_electives,
         "description": "Lists available open electives with offering departments and credits.",
     },

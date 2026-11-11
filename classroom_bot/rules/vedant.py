@@ -67,7 +67,7 @@ VEDANT_RULES = [
         "id": 7,
         "name": "Global Elective Information Retrieval",
         "member": "Vedant",
-        "pattern": r'\b(?:what\s+are|which|explain|tell\s+me\s+about|list)?\s*(?:the\s*)?global\s+electives?\b',
+        "pattern": r'\b(?:what\s+are|which|explain|tell\s+me\s+about|list|show|available)\s+(?:the\s*)?global\s+electives?\b|^\s*(?:the\s*)?global\s+electives?\s*$',
         "handler": handle_global_electives,
         "description": "Lists all global electives offered with credit count and offering departments.",
     },

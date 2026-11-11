@@ -1,9 +1,11 @@
-# Member-Wise Submission Document: Rachel
+# Member-Wise Submission Document: Rachel Febin Pulicken
 **Course**: Natural Language Programming (CSEAM631P)  
 **Programme**: B.Tech CS AIML-C, School of Engineering and Technology, CHRIST (Deemed to be University)  
 **Activity**: CIA Component - 1 (Question 1) - Rule-Based Chatbot Using Python RE  
-**Team Member**: Rachel  
-**Register No**: [Enter Register Number Here]  
+**Name**: Rachel Febin Pulicken  
+**Register No**: 2462132  
+**Class**: 6BTCS AIML C  
+**Group No**: 6  
 **Application Domain**: Classroom Assistance Bot  
 
 ---

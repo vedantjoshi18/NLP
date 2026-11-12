@@ -29,8 +29,8 @@ def handle_open_elective_enrollment(match: re.Match, kb: Dict[str, Any]) -> str:
 
     if matched_elective:
         name, data = matched_elective
-        students = ", ".join(data["sample_students"])
-        return f"📖 [Open Elective Enrollment: {name.title()}]\nTotal Enrolled: {data['enrolled_count']} students\nSample Enrolled Students: {students}"
+        students = ", ".join(data.get("students", data.get("sample_students", []))[:5])
+        return f"📖 [Open Elective Enrollment: {name.title()}]\nTotal Enrolled: {data['enrolled_count']} students\nEnrolled Students (sample): {students}"
 
     lines = ["📖 [Open Electives Enrollment Summary]"]
     for name, data in open_electives.items():

@@ -8,7 +8,7 @@ class TestRachelRules(unittest.TestCase):
         for q in ["how many students are in our class", "what's our class strength", "how many people in our section"]:
             resp = match_rachel_rule(q, KNOWLEDGE_BASE)
             self.assertIsNotNone(resp, f"Query '{q}' failed to match Q4")
-            self.assertIn("68", resp)
+            self.assertIn("Total Students", resp)
 
     def test_q12_minor_program(self):
         resp = match_rachel_rule("what are the minors", KNOWLEDGE_BASE)

@@ -23,7 +23,7 @@ class TestChatbotEngine(unittest.TestCase):
             # Vedant (5)
             (3, "who is our cr", "Vedant"),
             (7, "what are the global electives", "Vedant"),
-            (10, "who selected open elective digital marketing", "Vedant"),
+            (10, "who selected open elective data modeling and visualization", "Vedant"),
             (11, "what is honours program", "Vedant"),
             (16, "when are our exams", "Vedant"),
             # Rachel (6)

@@ -21,7 +21,7 @@ class TestSasmitaRules(unittest.TestCase):
     def test_q8_open_electives(self):
         resp = match_sasmita_rule("what are the open electives", KNOWLEDGE_BASE)
         self.assertIsNotNone(resp)
-        self.assertIn("Digital Marketing", resp)
+        self.assertIn("Computer Vision", resp)
 
     def test_q14_cia_schedule(self):
         resp_all = match_sasmita_rule("when are the cias", KNOWLEDGE_BASE)

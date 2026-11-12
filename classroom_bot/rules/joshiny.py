@@ -42,7 +42,7 @@ def handle_global_elective_enrollment(match: re.Match, kb: Dict[str, Any]) -> st
     
     if matched_elective:
         name, data = matched_elective
-        students = ", ".join(data["sample_students"])
+        students = ", ".join(data.get("students", data.get("sample_students", []))[:5])
         return f"🌐 [Global Elective Enrollment: {name.title()}]\nTotal Enrolled: {data['enrolled_count']} students\nSample Enrolled Students: {students}"
     
     lines = ["🌐 [Global Electives Enrollment Summary]"]

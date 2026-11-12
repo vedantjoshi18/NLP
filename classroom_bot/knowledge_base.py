@@ -7,9 +7,8 @@ KNOWLEDGE_BASE = {
         "floor": "4th Floor",
         "block": "Block II",
         "strength": {
-            "total": 68,
-            "boys": 42,
-            "girls": 26,
+            "total": 56,
+            "note": "55 students listed in Open Elective record (6BTCS AIML C)",
         },
     },
     "leadership": {
@@ -103,9 +102,41 @@ KNOWLEDGE_BASE = {
             "cyber forensics": {"code": "GE603", "credits": 3, "dept": "IT & Cyber", "enrolled_count": 22, "sample_students": ["Gaurav M.", "Sneha T.", "Varun D."]},
         },
         "open": {
-            "digital marketing": {"code": "OE601", "credits": 3, "dept": "School of Business", "enrolled_count": 32, "sample_students": ["Aman J.", "Bhavana K.", "Chetan L."]},
-            "financial literacy": {"code": "OE602", "credits": 3, "dept": "Commerce", "enrolled_count": 20, "sample_students": ["Divya N.", "Farhan Q.", "Gita S."]},
-            "creative writing": {"code": "OE603", "credits": 3, "dept": "English & Languages", "enrolled_count": 16, "sample_students": ["Isha M.", "Karan W.", "Lata V."]},
+            "computer vision": {
+                "code": "OE601", "credits": 3, "dept": "School of Engineering & Technology",
+                "enrolled_count": 12,
+                "students": ["S Mehanath", "Abel Georgy Wilson", "Ann Elizabeth", "Anna Binoy Augustine",
+                             "Anson Mathew Allan", "Kummithi Venkata Sudharshan Reddy", "Jemimah Anna Anil",
+                             "Antony Praveen Reddy K", "Janhavi J", "Shamith M Gowda", "Neeraj P", "Vedant Joshi"],
+            },
+            "data modeling and visualization": {
+                "code": "OE602", "credits": 3, "dept": "School of Engineering & Technology",
+                "enrolled_count": 20,
+                "students": ["Aarush Kumar", "Alan Baiju K", "Angelina Franco", "Ashle Ann Joseph", "D Pranaya",
+                             "Deeksha Paul", "Divina J", "Fathima Zanha P V", "Gokul Satheesh", "Jewin Jinson",
+                             "Liya Stanly", "Nanda Krishnan", "Pramith S", "Gunavathy R",
+                             "Rachel Febin Pulicken", "Renim Manzoor", "Shrijith K", "Sreehari S",
+                             "Stacy Anna Dsouza", "Tom Boby Alex"],
+            },
+            "internet of things": {
+                "code": "OE603", "credits": 3, "dept": "School of Engineering & Technology",
+                "enrolled_count": 5,
+                "students": ["Adharsh Jolly", "Alicia Theresa Pereira", "Joshiny Maria", "Samuel Biju", "Sasmita S"],
+            },
+            "introduction to ethical hacking": {
+                "code": "OE604", "credits": 3, "dept": "School of Engineering & Technology",
+                "enrolled_count": 13,
+                "students": ["Ahaon Sarkar", "Albert John A", "Aron Mathew", "Athul Paul Benny",
+                             "G Monisha Reddy", "Issac Limson", "Joann Binny", "Khushi K Sheth",
+                             "Krishna S Nair", "Pavithra Alexander", "Shaun Davis S",
+                             "Vyshna Biju", "Yugank Rathore"],
+            },
+            "prompt engineering": {
+                "code": "OE605", "credits": 3, "dept": "School of Engineering & Technology",
+                "enrolled_count": 5,
+                "students": ["Tenzin Rigzin", "Abin Kurian", "Alvin Aju Thomas", "Nethra R",
+                             "Ruthvik Daniel Rajan K R"],
+            },
         },
     },
     "programs": {
@@ -127,10 +158,42 @@ KNOWLEDGE_BASE = {
             "title": "Value Added Certificate Courses",
             "duration": "30 Contact Hours (1 Credit equivalent)",
             "current_offerings": [
-                "Generative AI & LLM Application Development (Industry Partner: AWS)",
-                "Full-Stack Web3 & Blockchain (Industry Partner: Polygon)",
-                "Applied Deep Learning for Computer Vision (Industry Partner: NVIDIA DLI)",
+                "Microsoft Azure AI 900 (AI Fundamentals) - 7 students",
+                "AWS ML Associate - 8 students",
+                "Microsoft Azure BI Data Analyst - 5 students",
+                "AI-200 Azure AI Cloud Developer Associate - 2 students",
+                "AWS Solutions Architect - 4 students",
+                "Security SC-900 - 1 student",
             ],
+            "certifications": {
+                "microsoft azure ai 901": {
+                    "students": ["Aarush Kumar", "Kummithi Venkata Sudharshan Reddy", "Ahaon Sarkar",
+                                 "Nanda Krishnan", "Joann Binny", "Athul Paul Benny", "Pavithra Alexander"],
+                    "count": 7,
+                },
+                "aws ml associate": {
+                    "students": ["Shamith M Gowda", "Anson Mathew Allan", "Ruthvik Daniel Rajan K R",
+                                 "Neeraj P", "Pramith S", "Abin Kurian", "Yugank Rathore", "Khushi K Sheth"],
+                    "count": 8,
+                },
+                "microsoft azure bi data analyst": {
+                    "students": ["Janhavi J", "Fathima Zanha Pv", "Renim Manzoor",
+                                 "Gokul Satheesh", "Divina J"],
+                    "count": 5,
+                },
+                "ai-200 azure ai cloud developer associate": {
+                    "students": ["Vyshna Biju", "Angelina Franco"],
+                    "count": 2,
+                },
+                "aws solutions architect": {
+                    "students": ["Alan Baiju K", "Aron Mathew", "Adharsh Jolly", "Abel Georgy Wilson"],
+                    "count": 4,
+                },
+                "security sc-900": {
+                    "students": ["Krishna S Nair"],
+                    "count": 1,
+                },
+            },
             "registration": "Register through Office of Student Affairs / KP portal",
         },
     },

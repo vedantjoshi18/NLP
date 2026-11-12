@@ -27,7 +27,7 @@ def handle_open_electives(match: re.Match, kb: Dict[str, Any]) -> str:
     electives = kb["electives"]["open"]
     lines = ["🌐 [Available Open Electives]"]
     for name, data in electives.items():
-        lines.append(f"  • {name.title()} ({data['code']}) - Offered by {data['dept']} [{data['credits']} Credits]")
+        lines.append(f"  • {name.title()} ({data['code']}) - {data['enrolled_count']} students enrolled [{data['credits']} Credits]")
     return "\n".join(lines)
 
 def handle_cia_schedule(match: re.Match, kb: Dict[str, Any]) -> str:

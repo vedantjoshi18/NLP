@@ -4,7 +4,12 @@ from typing import Optional, Dict, Any
 
 def handle_class_strength(match: re.Match, kb: Dict[str, Any]) -> str:
     st = kb["class_info"]["strength"]
-    return f"📊 [Class Strength]\nTotal Students: {st['total']} (Boys: {st['boys']}, Girls: {st['girls']})"
+    total = st.get("total", "N/A")
+    boys = st.get("boys")
+    girls = st.get("girls")
+    if boys and girls:
+        return f"📊 [Class Strength]\nTotal Students: {total} (Boys: {boys}, Girls: {girls})"
+    return f"📊 [Class Strength]\nTotal Students: {total}"
 
 def handle_minors_program(match: re.Match, kb: Dict[str, Any]) -> str:
     minors = kb["programs"]["minors"]
@@ -18,9 +23,10 @@ def handle_minors_program(match: re.Match, kb: Dict[str, Any]) -> str:
 
 def handle_certificate_program(match: re.Match, kb: Dict[str, Any]) -> str:
     cert = kb["programs"]["certificate"]
-    lines = [f"📜 [{cert['title']}] (Duration: {cert['duration']})", "Available Offerings:"]
+    lines = [f"📜 [{cert['title']}] (Duration: {cert['duration']})", "Available Certifications in Our Class:"]
     for c in cert["current_offerings"]:
         lines.append(f"  • {c}")
+    lines.append(f"\nRegistration: {cert['registration']}")
     return "\n".join(lines)
 
 def handle_subject_faculty(match: re.Match, kb: Dict[str, Any]) -> str:

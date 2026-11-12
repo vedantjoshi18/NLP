@@ -17,9 +17,9 @@ class TestVedantRules(unittest.TestCase):
         self.assertIn("Quantum Computing", resp)
 
     def test_q10_open_elective_enrollment(self):
-        resp = match_vedant_rule("who selected open elective digital marketing", KNOWLEDGE_BASE)
+        resp = match_vedant_rule("who selected open elective data modeling and visualization", KNOWLEDGE_BASE)
         self.assertIsNotNone(resp)
-        self.assertIn("32 students", resp)
+        self.assertIn("20 students", resp)
 
     def test_q11_honours_program(self):
         for q in ["what is honours", "how can i pursue honours", "tell me about the honours program"]:

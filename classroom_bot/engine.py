@@ -9,11 +9,27 @@ from classroom_bot.rules.joshiny import JOSHINY_RULES
 from classroom_bot.rules.vedant import VEDANT_RULES
 from classroom_bot.rules.rachel import RACHEL_RULES
 
+# Prioritized order to prevent broad catch-alls (e.g. timetable, students)
+# from preempting specific intent matches (e.g. CIA/exam schedules, elective enrollment).
+RULE_PRIORITY_ORDER = [
+    1,                 # Classroom location (matches 'where is our classroom/room/section c')
+    14, 16, 21,        # Specific dates: CIA, Exams, Mentoring hour
+    10, 9,             # Specific elective enrollment & student lookups
+    13, 11, 12,        # Specific academic programs: Certifications, Honours, Minors
+    8, 7,              # Elective catalogs: Open, Global
+    2, 15, 3, 20,      # Roles & leadership: CT, Sports CR, CR, HOD/Office
+    6,                 # Faculty Cabin & Contact (where is Dr/Prof X)
+    18, 19, 17,        # Subject specifics: Faculty, Credits, Syllabus
+    5, 4,              # General Timetable, Class Strength
+]
+
 class ChatbotEngine:
     def __init__(self, kb: Optional[Dict[str, Any]] = None):
         self.kb = kb or KNOWLEDGE_BASE
-        # Aggregate all rules in order
-        self.rules = SASMITA_RULES + JOSHINY_RULES + VEDANT_RULES + RACHEL_RULES
+        all_rules = SASMITA_RULES + JOSHINY_RULES + VEDANT_RULES + RACHEL_RULES
+        rule_map = {r["id"]: r for r in all_rules}
+        # Order rules by semantic specificity
+        self.rules = [rule_map[rid] for rid in RULE_PRIORITY_ORDER if rid in rule_map]
 
     def get_fallback_response(self, cleaned_query: str) -> str:
         return (

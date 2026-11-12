@@ -11,12 +11,13 @@ def print_help(engine: ChatbotEngine):
     print("\n" + "=" * 70)
     print("SUPPORTED QUERIES & MEMBER MAPPING (21 INTENTS)")
     print("=" * 70)
-    current_member = None
-    for r in engine.rules:
-        if r["member"] != current_member:
-            current_member = r["member"]
-            print(f"\n[{current_member.upper()}'S QUESTIONS]")
-        print(f"  Q{r['id']:2d}: {r['name']:48s}")
+    # Group by member in fixed presentation order
+    members = ["Sasmita", "Joshiny", "Vedant", "Rachel"]
+    for m in members:
+        print(f"\n[{m.upper()}'S QUESTIONS]")
+        m_rules = sorted([r for r in engine.rules if r["member"].lower() == m.lower()], key=lambda r: r["id"])
+        for r in m_rules:
+            print(f"  Q{r['id']:2d}: {r['name']:48s}")
     print("=" * 70 + "\n")
 
 def main():

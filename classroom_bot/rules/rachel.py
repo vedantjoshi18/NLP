@@ -10,7 +10,7 @@ def handle_class_strength(match: re.Match, kb: Dict[str, Any]) -> str:
     girls = st.get("girls", 20)
     note = st.get("note", "6 B.Tech CS AIML-C")
     return (
-        f"📊 [Class Strength - 6 B.Tech CS AIML-C]\n"
+        f"[Class Strength - 6 B.Tech CS AIML-C]\n"
         f"Total Students: {total}\n"
         f"Gender Breakdown: {boys} Boys, {girls} Girls\n"
         f"Note: {note}"
@@ -19,19 +19,23 @@ def handle_class_strength(match: re.Match, kb: Dict[str, Any]) -> str:
 def handle_minors_program(match: re.Match, kb: Dict[str, Any]) -> str:
     minors = kb["programs"]["minors"]
     opts = ", ".join(minors["options"])
-    track_lines = []
+    track_blocks = []
     if "tracks" in minors:
         for tkey, tinfo in minors["tracks"].items():
-            studs = ", ".join(tinfo["students"])
-            track_lines.append(f"  • {tinfo['title']}: {tinfo['count']} students enrolled ({studs})")
-    tracks_str = "\n".join(track_lines) if track_lines else ""
-    extra_str = f"\n• 6BTCS AIML-C Class Enrolment:\n{tracks_str}" if tracks_str else ""
+            t_lines = [f"  [{tinfo['title']} - {tinfo['count']} Students]"]
+            t_lines.append(f"    Offering: {tinfo.get('offering', 'School of Business and Management')}")
+            t_lines.append("    Individual Enrolled Students:")
+            for sname in tinfo["students"]:
+                t_lines.append(f"      - {sname}")
+            track_blocks.append("\n".join(t_lines))
+    tracks_str = "\n".join(track_blocks) if track_blocks else ""
+    extra_str = f"\n\nMinors Enrolled Students:\n{tracks_str}" if tracks_str else ""
     return (
-        f"🎓 [{minors['title']}]\n"
-        f"• Requirement: {minors['extra_credits']} Credits across 4 semesters\n"
-        f"• Tracks Available: {opts}\n"
-        f"• Timetable Slot: {minors.get('schedule', 'Wednesdays 11:00 - 14:00')}\n"
-        f"• Eligibility: {minors['eligibility']}"
+        f"[Interdisciplinary Minor Degree]\n"
+        f"Requirement: {minors['extra_credits']} Credits across 4 semesters\n"
+        f"Tracks Available: {opts}\n"
+        f"Timetable Slot: {minors.get('schedule', 'Wednesdays 11:00 - 14:00')}\n"
+        f"Eligibility: {minors['eligibility']}"
         f"{extra_str}"
     )
 
@@ -50,20 +54,24 @@ def handle_certificate_program(match: re.Match, kb: Dict[str, Any]) -> str:
                 break
         if matched:
             cname, cinfo = matched
-            stud_list = ", ".join(cinfo["students"])
+            stud_lines = "\n".join(f"  - {s}" for s in cinfo["students"])
             return (
-                f"📜 [Certification: {cname.title()}]\n"
+                f"[Certification: {cname.title()}]\n"
                 f"Total Students Completed: {cinfo['count']}\n"
-                f"Students: {stud_list}"
+                f"Certified Students:\n{stud_lines}"
             )
 
     lines = [
-        f"📜 [{cert_data['title']}] (Duration: {cert_data['duration']})",
-        f"Timetable Slot: {cert_data.get('schedule', 'Wednesdays 11:00 - 14:00')}",
-        "Certifications Completed by Our Class (from Department Records):",
+        f"[Value Added Certificate Programs]",
+        f"Duration: {cert_data['duration']} | Timetable Slot: {cert_data.get('schedule', 'Wednesdays 11:00 - 14:00')}",
+        "Total Certified in Class: 27 students\n",
+        "Individual Students by Certification Offering:",
     ]
-    for c in cert_data["current_offerings"]:
-        lines.append(f"  • {c}")
+    for cname, cinfo in certs_dict.items():
+        if cinfo["count"] > 0:
+            lines.append(f"\n  [{cname.title()} - {cinfo['count']} Students]")
+            for s in cinfo["students"]:
+                lines.append(f"    - {s}")
     lines.append(f"\nRegistration: {cert_data['registration']}")
     return "\n".join(lines)
 
@@ -76,7 +84,7 @@ def handle_subject_faculty(match: re.Match, kb: Dict[str, Any]) -> str:
         data = subjects[canon]
         lab_str = f" | Lab Venue: {data['lab']}" if "lab" in data else ""
         return (
-            f"👨‍🏫 [Faculty In-Charge]\n"
+            f"[Faculty In-Charge]\n"
             f"Subject: {data['full_name']} ({canon.upper()})\n"
             f"Course Code: {data.get('code', 'CSE')}\n"
             f"Faculty: {data['faculty']}{lab_str}"
@@ -87,7 +95,7 @@ def handle_subject_faculty(match: re.Match, kb: Dict[str, Any]) -> str:
     if canon in open_elecs:
         oe = open_elecs[canon]
         return (
-            f"👨‍🏫 [Faculty In-Charge - Open Elective]\n"
+            f"[Faculty In-Charge - Open Elective]\n"
             f"Subject: {canon.title()} ({oe.get('code', 'OE')})\n"
             f"Faculty: {oe.get('faculty', 'Department Faculty')}\n"
             f"Department: {oe.get('dept', 'SET')}"
@@ -103,7 +111,7 @@ def handle_course_credits(match: re.Match, kb: Dict[str, Any]) -> str:
     if canon in subjects:
         data = subjects[canon]
         return (
-            f"🎯 [Course Credit Details]\n"
+            f"[Course Credit Details]\n"
             f"Subject: {data['full_name']} ({canon.upper()})\n"
             f"Course Code: {data.get('code', 'CSE')}\n"
             f"Credits: {data['credits']} Credits ({data['structure']})"
@@ -114,7 +122,7 @@ def handle_course_credits(match: re.Match, kb: Dict[str, Any]) -> str:
     if canon in open_elecs:
         oe = open_elecs[canon]
         return (
-            f"🎯 [Course Credit Details - Open Elective]\n"
+            f"[Course Credit Details - Open Elective]\n"
             f"Subject: {canon.title()} ({oe.get('code', 'OE')})\n"
             f"Credits: {oe.get('credits', 3)} Credits (3 Lectures)"
         )
@@ -132,7 +140,7 @@ def handle_mentor_mentee(match: re.Match, kb: Dict[str, Any]) -> str:
     # If asked about mentoring hour
     raw_match = match.group(0).lower()
     if "when is mentoring" in raw_match or "mentoring hour" in raw_match:
-        return f"⏰ [Mentoring Schedule]\nMentoring hour is on {ment_hour}."
+        return f"[Mentoring Schedule]\nMentoring hour is on {ment_hour}."
 
     if roll_str:
         try:
@@ -141,7 +149,7 @@ def handle_mentor_mentee(match: re.Match, kb: Dict[str, Any]) -> str:
             roll_short = roll % 1000 if roll > 1000000 else roll
             for g in groups:
                 if g["range"][0] <= roll_short <= g["range"][1]:
-                    return f"🧑‍🏫 [Mentor Allocation]\nRoll Number: {roll}\nAssigned Mentor: {g['mentor']} ({g['cabin']})\nMentoring Hour: {ment_hour}"
+                    return f"[Mentor Allocation]\nRoll Number: {roll}\nAssigned Mentor: {g['mentor']} ({g['cabin']})\nMentoring Hour: {ment_hour}"
             return f"Roll Number {roll} out of bounds (1 to 55)."
         except ValueError:
             pass
@@ -150,14 +158,14 @@ def handle_mentor_mentee(match: re.Match, kb: Dict[str, Any]) -> str:
         fac_clean = faculty.strip().lower()
         for g in groups:
             if any(part in g["mentor"].lower() for part in fac_clean.split()):
-                return f"🧑‍🏫 [Mentee List]\nFaculty: {g['mentor']}\nMentees: Roll {g['range'][0]} to {g['range'][1]} (Total: {g['count']} students)\nCabin: {g['cabin']}\nMentoring Hour: {ment_hour}"
+                return f"[Mentee List]\nFaculty: {g['mentor']}\nMentees: Roll {g['range'][0]} to {g['range'][1]} (Total: {g['count']} students)\nCabin: {g['cabin']}\nMentoring Hour: {ment_hour}"
         return f"Faculty '{faculty.title()}' not found in mentor list."
 
     # General mentor list
-    lines = ["🧑‍🏫 [Class Mentor-Mentee Distribution & Mentoring Hour]"]
+    lines = ["[Class Mentor-Mentee Distribution & Mentoring Hour]"]
     lines.append(f"Weekly Mentoring Session: {ment_hour}\n")
     for g in groups:
-        lines.append(f"  • {g['mentor']}: Roll {g['range'][0]} to {g['range'][1]} ({g['cabin']})")
+        lines.append(f"  - {g['mentor']}: Roll {g['range'][0]} to {g['range'][1]} ({g['cabin']})")
     return "\n".join(lines)
 
 RACHEL_RULES = [
@@ -181,7 +189,7 @@ RACHEL_RULES = [
         "id": 13,
         "name": "Certificate Program Information Retrieval",
         "member": "Rachel",
-        "pattern": r'\b(?:(?:what|how|which|tell\s+me\s+about|explain)(?:\s+can\s+i\s+pursue)?\s+)?(?:the\s+)?certificates?(?:\s+(?:programs?|courses?))?\b|\bwho\s+(?:did|completed|holds|took)\s+(?:the\s*)?(?P<cert_name>[a-zA-Z\s\d\-]+?)(?:\s+certification|\s+cert|\?|$)\b',
+        "pattern": r'\b(?:(?:what|how|which|tell\s+me\s+about|explain|list|who\s+(?:completed|did|holds|has|took))(?:\s+can\s+i\s+pursue)?\s+)?(?:the\s+)?(?:certificates?|certifications?)(?:\s+(?:programs?|courses?|students?|list))?\b|\bwho\s+(?:did|completed|holds|took)\s+(?:the\s*)?(?P<cert_name>[a-zA-Z\s\d\-]+?)(?:\s+certification|\s+cert|\?|$)\b',
         "handler": handle_certificate_program,
         "description": "Matches certificate queries or specific cert inquiries using named group (?P<cert_name>...).",
     },

@@ -88,6 +88,9 @@ class TestQuestionVariants(unittest.TestCase):
             "When do we have AI?",
             "When do we have NLP?",
             "When is Deep Learning?",
+            "Daywise timetable",
+            "Day wise schedule",
+            "Show timetable for Wednesday",
         ]
         for q in variants:
             with self.subTest(q=q):
@@ -160,6 +163,9 @@ class TestQuestionVariants(unittest.TestCase):
             "How can I pursue honours?",
             "Tell me about the honours program.",
             "Honours program",
+            "List honours students",
+            "Honours students",
+            "Who is taking honours?",
         ]
         for q in variants:
             with self.subTest(q=q):
@@ -183,6 +189,9 @@ class TestQuestionVariants(unittest.TestCase):
             "How can I pursue a certificate?",
             "Tell me about certificate courses.",
             "Who did AWS ML Associate?",
+            "List certification students",
+            "Who completed certifications?",
+            "Certificate students",
         ]
         for q in variants:
             with self.subTest(q=q):
@@ -285,6 +294,16 @@ class TestQuestionVariants(unittest.TestCase):
         for q in variants:
             with self.subTest(q=q):
                 self.assert_intent(q, 21)
+
+    # Help Command
+    def test_help_command(self):
+        for cmd in ["help", "commands", "menu"]:
+            with self.subTest(cmd=cmd):
+                res = self.engine.process_query(cmd)
+                self.assertTrue(res["matched"])
+                self.assertEqual(res["id"], 0)
+                self.assertIn("SUPPORTED QUERIES & QUESTIONS THE BOT CAN ANSWER", res["response"])
+                self.assertIn("Where is our classroom?", res["response"])
 
 if __name__ == "__main__":
     unittest.main()

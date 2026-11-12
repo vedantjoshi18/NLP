@@ -351,8 +351,8 @@ KNOWLEDGE_BASE = {
                     "students": ['Shamith M Gowda', 'Anson Mathew Allan', 'Ruthvik Daniel Rajan K R', 'Neeraj P', 'Pramith S', 'Abin Kurian', 'Yugank Rathore', 'Khushi K Sheth'],
                 },
                 "microsoft azure bi data analyst": {
-                    "count": 0,
-                    "students": [],
+                    "count": 5,
+                    "students": ['Divina J', 'Fathima Zanha P V', 'Gokul Satheesh', 'Renim Manzoor', 'Janhavi J'],
                 },
                 "aws solutions architect": {
                     "count": 4,

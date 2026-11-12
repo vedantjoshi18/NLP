@@ -5,16 +5,16 @@ from classroom_bot.resolver import resolve_subject, find_student
 
 def handle_cr_info(match: re.Match, kb: Dict[str, Any]) -> str:
     crs = kb["leadership"]["cr"]
-    lines = ["👥 [Class Representatives (CR)]"]
+    lines = ["[Class Representatives (CR)]"]
     for cr in crs:
-        lines.append(f"  • {cr['name']} (Roll: {cr['roll']}) - {cr['contact']}")
+        lines.append(f"  - {cr['name']} (Roll: {cr['roll']}) - {cr['contact']}")
     return "\n".join(lines)
 
 def handle_global_electives(match: re.Match, kb: Dict[str, Any]) -> str:
     electives = kb["electives"]["global"]
-    lines = ["🌍 [Offered Global Electives - 6th Semester]"]
+    lines = ["[Offered Global Electives - 6th Semester]"]
     for name, data in electives.items():
-        lines.append(f"  • {name.title()} ({data['code']}) - Dept: {data['dept']} [{data['credits']} Credits]")
+        lines.append(f"  - {name.title()} ({data['code']}) - Dept: {data['dept']} [{data['credits']} Credits]")
     return "\n".join(lines)
 
 def handle_open_elective_enrollment(match: re.Match, kb: Dict[str, Any]) -> str:
@@ -26,9 +26,9 @@ def handle_open_elective_enrollment(match: re.Match, kb: Dict[str, Any]) -> str:
     if student_query:
         students = find_student(student_query, kb)
         if students:
-            lines = [f"📖 [Open Elective Selection for '{student_query.title()}']"]
+            lines = [f"[Open Elective Selection for '{student_query.title()}']"]
             for s in students:
-                lines.append(f"  • {s['name']} (Reg No: {s['regno']}) → {s['open_elective']}")
+                lines.append(f"  - {s['name']} (Reg No: {s['regno']}) -> {s['open_elective']}")
             return "\n".join(lines)
         return f"Student '{student_query.title()}' not found in 6BTCS AIML C class record."
 
@@ -49,46 +49,51 @@ def handle_open_elective_enrollment(match: re.Match, kb: Dict[str, Any]) -> str:
     if matched_elective:
         name, data = matched_elective
         student_list = data.get("students", data.get("sample_students", []))
-        sample_str = ", ".join(student_list[:6])
+        stud_lines = "\n".join(f"    - {s}" for s in student_list)
         return (
-            f"📖 [Open Elective Enrollment: {name.title()}]\n"
+            f"[Open Elective Enrollment: {name.title()}]\n"
             f"Course Code: {data.get('code', 'ADS/CSE')}\n"
             f"Faculty In-Charge: {data.get('faculty', 'Department Faculty')}\n"
             f"Total Enrolled: {data['enrolled_count']} students\n"
-            f"Enrolled Students (sample): {sample_str}..."
+            f"Enrolled Students:\n{stud_lines}"
         )
 
     # 3. Overall summary
-    lines = ["📖 [Open Electives Enrollment Summary - 6BTCS AIML C]"]
+    lines = ["[Open Electives Enrollment Summary - 6BTCS AIML C]"]
     for name, data in open_electives.items():
-        lines.append(f"  • {name.title()}: {data['enrolled_count']} students enrolled ({data.get('faculty', 'Faculty')})")
+        lines.append(f"  - {name.title()}: {data['enrolled_count']} students enrolled ({data.get('faculty', 'Faculty')})")
     return "\n".join(lines)
 
 def handle_honours_program(match: re.Match, kb: Dict[str, Any]) -> str:
     hon = kb["programs"]["honours"]
-    courses = "\n".join(f"  • {c}" for c in hon.get("courses_6th_sem", []))
-    track_lines = []
+    courses = "\n".join(f"  - {c}" for c in hon.get("courses_6th_sem", []))
+    track_blocks = []
     if "tracks" in hon:
         for tkey, tinfo in hon["tracks"].items():
-            stud_sample = ", ".join(tinfo["students"][:4])
-            track_lines.append(f"  • {tinfo['title']}: {tinfo['count']} students enrolled ({stud_sample}...)")
-    tracks_str = "\n".join(track_lines) if track_lines else "Tracks offered in Department."
+            t_lines = [f"  [{tinfo['title']} - {tinfo['count']} Students]"]
+            t_lines.append(f"    6th Sem Course: {tinfo.get('courses_6th_sem', 'Honours Specialization')}")
+            t_lines.append("    Individual Enrolled Students:")
+            for sname in tinfo["students"]:
+                t_lines.append(f"      - {sname}")
+            track_blocks.append("\n".join(t_lines))
+    tracks_str = "\n\n".join(track_blocks) if track_blocks else "Tracks offered in Department."
     return (
-        f"🎓 [{hon['title']}]\n"
-        f"• Requirement: {hon['extra_credits']} extra credits beyond standard curriculum ({hon['duration']})\n"
-        f"• Eligibility: {hon['eligibility']}\n"
-        f"• Timetable Slot: {hon.get('schedule', 'Wednesdays 11:00 - 14:00')}\n"
-        f"• 6BTCS AIML-C Class Enrolment ({hon.get('enrolled_count', 20)} students):\n{tracks_str}\n"
-        f"• 6th Semester Honours Courses & Faculty:\n{courses}\n"
-        f"• Registration: {hon['registration']}"
+        f"[B.Tech Honours Program]\n"
+        f"Requirement: {hon['extra_credits']} extra credits beyond standard curriculum ({hon['duration']})\n"
+        f"Eligibility: {hon['eligibility']}\n"
+        f"Timetable Slot: {hon.get('schedule', 'Wednesdays 11:00 - 14:00')}\n"
+        f"Total Enrolled in Class: {hon.get('enrolled_count', 20)} students\n\n"
+        f"Honours Tracks and Individual Enrolled Students:\n{tracks_str}\n\n"
+        f"6th Semester Honours Courses & Faculty:\n{courses}\n"
+        f"Registration: {hon['registration']}"
     )
 
 def handle_exam_schedule(match: re.Match, kb: Dict[str, Any]) -> str:
     exams = kb["schedules"]["exam"]
     return (
-        f"📋 [Examination Schedule]\n"
-        f"• End Semester Theory Exams: {exams['end_sem']}\n"
-        f"• Practical / Lab Examinations: {exams['practicals']}"
+        f"[Examination Schedule]\n"
+        f"- End Semester Theory Exams: {exams['end_sem']}\n"
+        f"- Practical / Lab Examinations: {exams['practicals']}"
     )
 
 VEDANT_RULES = [
@@ -120,7 +125,7 @@ VEDANT_RULES = [
         "id": 11,
         "name": "Honours Program Information Retrieval",
         "member": "Vedant",
-        "pattern": r'\b(?:what\s+is|how\s+(?:can\s+i\s+)?pursue|tell\s+me\s+about|details\s+on|eligibility\s+for)?\s*(?:the\s*)?honours?(?:\s+program|\s+courses?|\s+subjects?)?\b',
+        "pattern": r'\b(?:what\s+is|how\s+(?:can\s+i\s+)?pursue|tell\s+me\s+about|details\s+on|eligibility\s+for|list|who\s+(?:is|are)\s+(?:in|taking))?\s*(?:the\s*)?(?:honours?|honors?)(?:\s+(?:program|courses?|subjects?|students?|list))?\b',
         "handler": handle_honours_program,
         "description": "Explains honours program eligibility (7.5 CGPA), credits, and 6th sem courses from timetable.",
     },

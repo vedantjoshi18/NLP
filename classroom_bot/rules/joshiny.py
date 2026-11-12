@@ -9,7 +9,7 @@ def handle_class_teacher(match: re.Match, kb: Dict[str, Any]) -> str:
     if "co" in role:
         co = leadership["co_class_teacher"]
         return (
-            f"👩‍🏫 [Co-Class Teacher]\n"
+            f"[Co-Class Teacher]\n"
             f"Name: {co['name']}\n"
             f"Location: {co['cabin']}\n"
             f"Email: {co['email']}\n"
@@ -17,7 +17,7 @@ def handle_class_teacher(match: re.Match, kb: Dict[str, Any]) -> str:
         )
     ct = leadership["class_teacher"]
     return (
-        f"👨‍🏫 [Class Teacher]\n"
+        f"[Class Teacher]\n"
         f"Name: {ct['name']}\n"
         f"Location: {ct['cabin']}\n"
         f"Email: {ct['email']}\n"
@@ -31,24 +31,24 @@ def handle_faculty_location(match: re.Match, kb: Dict[str, Any]) -> str:
     if results:
         lines = []
         for r in results:
-            lines.append(f"🏢 [Faculty Contact: {r['name']}]")
-            lines.append(f"  • Role: {r.get('role', 'Faculty')}")
-            lines.append(f"  • Cabin / Location: {r.get('location', 'Faculty Room, GF-B3')}")
+            lines.append(f"[Faculty Contact: {r['name']}]")
+            lines.append(f"  - Role: {r.get('role', 'Faculty')}")
+            lines.append(f"  - Cabin / Location: {r.get('location', 'Faculty Room, GF-B3')}")
             if r.get("email"):
-                lines.append(f"  • Email: {r['email']}")
+                lines.append(f"  - Email: {r['email']}")
             if r.get("ext") and r.get("ext") != "N/A":
-                lines.append(f"  • Extension: {r['ext']}")
+                lines.append(f"  - Extension: {r['ext']}")
         return "\n".join(lines)
 
     return (
         f"Faculty '{faculty_query.title()}' not found in current semester faculty directory.\n"
         f"Key Faculty in 6BTCS AIML C:\n"
-        f"  • Dr. Poongodi C (Class Teacher - Faculty Room, GF-B3)\n"
-        f"  • Dr. Jeno Lovesum S P (Co-Class Teacher - Faculty Room, GF-B3)\n"
-        f"  • Dr. D Vinodha (NLP - DV Lab)\n"
-        f"  • Dr. Amos Bortiew (Deep Learning / AI - B6-634)\n"
-        f"  • Prof. Wims Magdalene Mary A (DIP - Faculty Room)\n"
-        f"  • Dr. Kukatlapalli Pradeep Kumar (Server Integration / Data Modeling)"
+        f"  - Dr. Poongodi C (Class Teacher - Faculty Room, GF-B3)\n"
+        f"  - Dr. Jeno Lovesum S P (Co-Class Teacher - Faculty Room, GF-B3)\n"
+        f"  - Dr. D Vinodha (NLP - DV Lab)\n"
+        f"  - Dr. Amos Bortiew (Deep Learning / AI - B6-634)\n"
+        f"  - Prof. Wims Magdalene Mary A (DIP - Faculty Room)\n"
+        f"  - Dr. Kukatlapalli Pradeep Kumar (Server Integration / Data Modeling)"
     )
 
 def handle_global_elective_enrollment(match: re.Match, kb: Dict[str, Any]) -> str:
@@ -66,22 +66,22 @@ def handle_global_elective_enrollment(match: re.Match, kb: Dict[str, Any]) -> st
         name, data = matched_elective
         students = ", ".join(data.get("students", data.get("sample_students", []))[:5])
         return (
-            f"🌐 [Global Elective Enrollment: {name.title()}]\n"
+            f"[Global Elective Enrollment: {name.title()}]\n"
             f"Course Code: {data.get('code', 'GE')}\n"
             f"Offering Department: {data.get('dept', 'SET')}\n"
             f"Total Enrolled: {data['enrolled_count']} students\n"
             f"Sample Enrolled Students: {students}"
         )
 
-    lines = ["🌐 [Global Electives Enrollment Summary]"]
+    lines = ["[Global Electives Enrollment Summary]"]
     for name, data in global_electives.items():
-        lines.append(f"  • {name.title()} ({data.get('code', 'GE')}): {data['enrolled_count']} students enrolled")
+        lines.append(f"  - {name.title()} ({data.get('code', 'GE')}): {data['enrolled_count']} students enrolled")
     return "\n".join(lines)
 
 def handle_sports_cr(match: re.Match, kb: Dict[str, Any]) -> str:
     sports = kb["leadership"]["sports_cr"]
     return (
-        f"🏆 [Sports Representative]\n"
+        f"[Sports Representative]\n"
         f"Name: {sports['name']}\n"
         f"Role: {sports['role']}\n"
         f"Email: {sports['contact']}\n"
@@ -92,15 +92,15 @@ def handle_department_info(match: re.Match, kb: Dict[str, Any]) -> str:
     title = match.groupdict().get("title", "").lower()
     dept = kb["leadership"]["department"]
     if "hod" in title or "head" in title:
-        return f"🏛️ [Head of Department]\n{dept['hod']}\nOffice: {dept['office']}"
+        return f"[Head of Department]\n{dept['hod']}\nOffice: {dept['office']}"
     elif "program" in title:
-        return f"🏛️ [Program Coordinator]\n{dept['program_coordinator']}\nOffice: {dept['office']}"
+        return f"[Program Coordinator]\n{dept['program_coordinator']}\nOffice: {dept['office']}"
     elif "year" in title:
-        return f"🏛️ [Year Coordinator]\n{dept['year_coordinator']}\nOffice: {dept['office']}"
+        return f"[Year Coordinator]\n{dept['year_coordinator']}\nOffice: {dept['office']}"
     elif "office" in title:
-        return f"🏛️ [Department Office]\nLocation: {dept['office']}\nDepartment: {dept.get('dept', 'Department of AI and Data Science Engineering')}"
+        return f"[Department Office]\nLocation: {dept['office']}\nDepartment: {dept.get('dept', 'Department of AI and Data Science Engineering')}"
     return (
-        f"🏛️ [Department Leadership & Office]\n"
+        f"[Department Leadership & Office]\n"
         f"HOD: {dept['hod']}\n"
         f"Program Coordinator: {dept['program_coordinator']}\n"
         f"Year Coordinator: {dept['year_coordinator']}\n"

@@ -3,10 +3,22 @@ import re
 from typing import Optional, Dict, Any
 from classroom_bot.resolver import resolve_subject, find_schedule_for_subject
 
+def format_day_schedule(day_name: str, raw_sched: str) -> str:
+    periods = [p.strip() for p in raw_sched.split("|") if p.strip()]
+    lines = [f"[Timetable for {day_name.capitalize()} - 6 B.Tech CS AIML-C]"]
+    for p in periods:
+        m = re.match(r"^(\d{2}:\d{2}\s*-\s*\d{2}:\d{2})\s*(.*)$", p)
+        if m:
+            time_slot, desc = m.group(1), m.group(2).strip()
+            lines.append(f"  - {time_slot} : {desc}")
+        else:
+            lines.append(f"  - {p}")
+    return "\n".join(lines)
+
 def handle_classroom_location(match: re.Match, kb: Dict[str, Any]) -> str:
     info = kb["class_info"]
     return (
-        f"📍 [Classroom Location]\n"
+        f"[Classroom Location]\n"
         f"Class: {info['section']} ({info.get('semester', '6th Semester')})\n"
         f"Room: {info['room']}, {info['floor']}, {info['block']}\n"
         f"Department: {info['department']}"
@@ -24,43 +36,51 @@ def handle_timetable(match: re.Match, kb: Dict[str, Any]) -> str:
         canon = resolve_subject(sched_subj)
         subj_name = kb["subjects"].get(canon, {}).get("full_name", sched_subj.title()) if canon else sched_subj.title()
         if slots:
-            lines = [f"📅 [Class Schedule for {subj_name}]"]
+            lines = [f"[Class Schedule for {subj_name}]"]
             for s in slots:
-                lines.append(f"  • {s}")
+                lines.append(f"  - {s}")
             return "\n".join(lines)
         return f"Could not find scheduled slots for '{sched_subj.title()}'. Type 'timetable' to see the full schedule."
 
-    # 2. If user asked about a specific day (e.g., "Monday schedule")
+    # 2. If user asked about a specific day (e.g., "Monday schedule", "Tuesday timetable")
     if day:
         day_key = day.lower()
         if day_key == "today":
             day_key = "monday"  # Default reference day
         if day_key in timetable:
-            return f"📅 [Timetable for {day_key.capitalize()}]\n{timetable[day_key]}"
+            return format_day_schedule(day_key, timetable[day_key])
         return f"No classes scheduled for {day_key.capitalize()} (Weekend)."
 
-    # 3. Return full weekly schedule
-    lines = ["📅 [Weekly Timetable for 6 B.Tech CS AIML-C]"]
-    for d, sched in timetable.items():
-        lines.append(f"  • {d.capitalize():9s}: {sched}")
+    # 3. Return full weekly daywise schedule
+    lines = ["[Weekly Timetable for 6 B.Tech CS AIML-C]"]
+    for d, raw_sched in timetable.items():
+        lines.append(f"\n{d.capitalize()}:")
+        periods = [p.strip() for p in raw_sched.split("|") if p.strip()]
+        for p in periods:
+            m = re.match(r"^(\d{2}:\d{2}\s*-\s*\d{2}:\d{2})\s*(.*)$", p)
+            if m:
+                time_slot, desc = m.group(1), m.group(2).strip()
+                lines.append(f"  - {time_slot} : {desc}")
+            else:
+                lines.append(f"  - {p}")
     return "\n".join(lines)
 
 def handle_open_electives(match: re.Match, kb: Dict[str, Any]) -> str:
     electives = kb["electives"]["open"]
-    lines = ["🌐 [Available Open Electives - 6th Semester]"]
+    lines = ["[Available Open Electives - 6th Semester]"]
     for name, data in electives.items():
-        lines.append(f"  • {name.title()} ({data['code']}) - Faculty: {data['faculty']} [{data['enrolled_count']} students enrolled, {data['credits']} Credits]")
+        lines.append(f"  - {name.title()} ({data['code']}) - Faculty: {data['faculty']} [{data['enrolled_count']} students enrolled, {data['credits']} Credits]")
     return "\n".join(lines)
 
 def handle_cia_schedule(match: re.Match, kb: Dict[str, Any]) -> str:
     cia_num = match.groupdict().get("cia_num")
     cias = kb["schedules"]["cia"]
     if cia_num and cia_num in cias:
-        return f"📝 [CIA {cia_num} Schedule]\n{cias[cia_num]}"
+        return f"[CIA {cia_num} Schedule]\n{cias[cia_num]}"
 
-    lines = ["📝 [Continuous Internal Assessment (CIA) Schedule]"]
+    lines = ["[Continuous Internal Assessment (CIA) Schedule]"]
     for num, details in cias.items():
-        lines.append(f"  • CIA {num}: {details}")
+        lines.append(f"  - CIA {num}: {details}")
     return "\n".join(lines)
 
 def handle_syllabus(match: re.Match, kb: Dict[str, Any]) -> str:
@@ -73,7 +93,7 @@ def handle_syllabus(match: re.Match, kb: Dict[str, Any]) -> str:
         # Check open electives
         if canon in kb["electives"]["open"]:
             oe = kb["electives"]["open"][canon]
-            return f"📚 [{oe['code']} - {canon.title()}]\nThis is a 3-credit Open Elective handled by {oe['faculty']}."
+            return f"[{oe['code']} - {canon.title()}]\nThis is a 3-credit Open Elective handled by {oe['faculty']}."
         return f"Subject '{raw_subj.upper()}' not found. Available subjects: {', '.join(s.upper() for s in subjects.keys())}."
 
     subj_data = subjects[canon]
@@ -81,15 +101,15 @@ def handle_syllabus(match: re.Match, kb: Dict[str, Any]) -> str:
         try:
             u_idx = int(unit) - 1
             if 0 <= u_idx < len(subj_data["units"]):
-                return f"📚 [{subj_data['full_name']} ({canon.upper()}) Syllabus - Unit {unit}]\n{subj_data['units'][u_idx]}"
+                return f"[{subj_data['full_name']} ({canon.upper()}) Syllabus - Unit {unit}]\n{subj_data['units'][u_idx]}"
             return f"Unit {unit} does not exist for {canon.upper()} (Total units: {len(subj_data['units'])})."
         except ValueError:
             pass
 
     # Return all units
-    lines = [f"📚 [Syllabus: {subj_data['full_name']} ({canon.upper()})]"]
+    lines = [f"[Syllabus: {subj_data['full_name']} ({canon.upper()})]"]
     for u in subj_data["units"]:
-        lines.append(f"  • {u}")
+        lines.append(f"  - {u}")
     return "\n".join(lines)
 
 SASMITA_RULES = [
@@ -129,7 +149,7 @@ SASMITA_RULES = [
         "id": 5,
         "name": "Class Timetable Retrieval",
         "member": "Sasmita",
-        "pattern": r'\b(?:when\s+(?:do\s+we\s+have|is)\s+(?P<sched_subj>[a-zA-Z\s]+?)(?:\s+class|\s+lecture)?$|(?P<day_pre>monday|tuesday|wednesday|thursday|friday|saturday|today)\s+(?:timetable|schedule|routine)|(?:timetable|schedule|routine)(?:\s+(?:for|on)?\s*(?P<day_post>monday|tuesday|wednesday|thursday|friday|saturday|today))?)\b',
+        "pattern": r'\b(?:when\s+(?:do\s+we\s+have|is)\s+(?P<sched_subj>[a-zA-Z\s]+?)(?:\s+class|\s+lecture)?$|(?P<day_pre>monday|tuesday|wednesday|thursday|friday|saturday|today)\s+(?:timetable|schedule|routine)|(?:(?:daywise|day\s+wise|weekly|class)\s+)?(?:timetable|schedule|routine)(?:\s+(?:for|on)?\s*(?P<day_post>monday|tuesday|wednesday|thursday|friday|saturday|today))?)\b',
         "handler": handle_timetable,
         "description": "Retrieves day-wise, subject-wise (e.g. 'When do we have AI?'), or complete weekly timetable.",
     },

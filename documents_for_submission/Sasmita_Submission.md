@@ -13,7 +13,7 @@ Group No: 6
   5. Classroom location please.
 * **Rules**:
   * Match user inquiries asking for the physical room number, floor, or building location of the section.
-  * Retrieve classroom venue details (Room 412, 4th Floor, Block II) from the class information database.
+  * Retrieve classroom venue details (Room 312, Ground Floor, GF-B3) from the class information database.
   * Dynamically format and return the classroom location details.
 * **Regular Expressions**:
   ```python
@@ -31,11 +31,11 @@ Group No: 6
   5. What is the class timetable on friday?
 * **Rules**:
   * Identify requests for daily class schedules or the complete weekly timetable.
-  * Use the named capturing group `(?P<day>...)` to extract the specific weekday requested (e.g., monday, tuesday).
+  * Use named capturing groups `(?P<day_pre>...)` or `(?P<day_post>...)` to extract the specific weekday requested (e.g., monday, tuesday).
   * If a day is captured, dynamically look up and return that day's lecture slots. If omitted, return the complete weekly timetable.
 * **Regular Expressions**:
   ```python
-  r'\b(?:timetable|schedule|routine)(?:\s+(?:for|on)?\s*(?P<day>monday|tuesday|wednesday|thursday|friday|today))?\b'
+  r'\b(?:(?P<day_pre>monday|tuesday|wednesday|thursday|friday|saturday|today)\s+(?:timetable|schedule|routine)|(?:timetable|schedule|routine)(?:\s+(?:for|on)?\s*(?P<day_post>monday|tuesday|wednesday|thursday|friday|saturday|today))?)\b'
   ```
 
 ---

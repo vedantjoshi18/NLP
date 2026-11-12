@@ -7,7 +7,8 @@ def handle_classroom_location(match: re.Match, kb: Dict[str, Any]) -> str:
     return f"📍 [Classroom Location]\nOur class ({info['section']}) is in {info['room']}, {info['floor']}, {info['block']}."
 
 def handle_timetable(match: re.Match, kb: Dict[str, Any]) -> str:
-    day = match.groupdict().get("day")
+    gd = match.groupdict()
+    day = gd.get("day_pre") or gd.get("day_post") or gd.get("day")
     timetable = kb["schedules"]["timetable"]
     if day:
         day_key = day.lower()
@@ -78,7 +79,7 @@ SASMITA_RULES = [
         "id": 5,
         "name": "Class Timetable Retrieval",
         "member": "Sasmita",
-        "pattern": r'\b(?:timetable|schedule|routine)(?:\s+(?:for|on)?\s*(?P<day>monday|tuesday|wednesday|thursday|friday|today))?\b',
+        "pattern": r'\b(?:(?P<day_pre>monday|tuesday|wednesday|thursday|friday|saturday|today)\s+(?:timetable|schedule|routine)|(?:timetable|schedule|routine)(?:\s+(?:for|on)?\s*(?P<day_post>monday|tuesday|wednesday|thursday|friday|saturday|today))?)\b',
         "handler": handle_timetable,
         "description": "Retrieves day-wise or complete weekly class routine using named group (?P<day>...).",
     },

@@ -49,8 +49,8 @@ Group No: 6
   5. What are the value-added certificate offerings?
 * **Rules**:
   * Identify student inquiries regarding short-term, value-added certification courses.
-  * Fetch current 30-hour industry-partnered certifications (AWS Generative AI, Polygon Web3, NVIDIA DLI).
-  * Format and output certificate names, course duration, and registration directions.
+  * Fetch current industry-aligned certifications in our class (AWS ML Associate, Microsoft Azure AI 900, Azure BI Data Analyst, AWS Solutions Architect, AI-200).
+  * Format and output certificate names, student counts, course duration, and registration directions.
 * **Regular Expressions**:
   ```python
   r'\b(?:what|how|tell\s+me\s+about|which)?\s*certificate\s*(?:programs?|courses?)\b'
@@ -61,10 +61,10 @@ Group No: 6
 ### Question 4: Subject Faculty Identification
 * **Questions**:
   1. Who teaches AI?
-  2. Which faculty handles DBMS?
-  3. Who is our subject teacher for ML?
-  4. Who takes NLP?
-  5. Which professor teaches AI?
+  2. Who teaches NLP?
+  3. Which faculty handles Deep Learning?
+  4. Who is our subject teacher for Digital Image Processing?
+  5. Who takes Professional Ethics?
 * **Rules**:
   * Match queries asking for the teacher or faculty in charge of an academic course.
   * Dynamically capture the target subject code/acronym using the named capturing group `(?P<subject>\w+)`.

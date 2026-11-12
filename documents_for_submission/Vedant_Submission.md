@@ -42,11 +42,11 @@ Group No: 6
 
 ### Question 3: Open Elective Subject and Student Enrollment Retrieval
 * **Questions**:
-  1. Who selected Open Elective Digital Marketing?
+  1. Who selected Open Elective Data Modeling and Visualization?
   2. How many students are taking open elective?
-  3. List open elective enrollments for Financial Literacy.
-  4. Who enrolled in open elective Creative Writing?
-  5. Show students in open elective.
+  3. List open elective enrollments for Computer Vision.
+  4. Who enrolled in open elective Introduction to Ethical Hacking?
+  5. Show students in open elective Prompt Engineering.
 * **Rules**:
   * Match queries seeking enrollment statistics and registered peer student lists for open electives.
   * Extract the elective title using named capturing group `(?P<elective>[a-zA-Z\s]+)?`.

@@ -14,7 +14,7 @@ Group No: 6
 * **Rules**:
   * Match queries asking for the class teacher or co-class teacher in charge of the section.
   * Use the named capturing group `(?P<role>...)` to determine whether the user is asking for the class teacher or the co-class teacher.
-  * Dynamically fetch and display the respective teacher's name, cabin room number, university email, and extension number.
+  * Dynamically fetch and display the respective teacher's name (Dr. Poongodi C / Dr. Jeno Lovesum S P), location (Faculty Room, GF-B3), and official email.
 * **Regular Expressions**:
   ```python
   r'\bwho\s+(?:is|handles).*?\b(?P<role>co[- ]class\s+teacher|class\s+teacher|section)\b'
@@ -24,15 +24,15 @@ Group No: 6
 
 ### Question 2: Faculty Location and Contact Information Retrieval
 * **Questions**:
-  1. Where is Professor Saravanan's cabin?
-  2. How can I contact Dr Deepa?
-  3. Where to find Professor Praveen?
-  4. Cabin of Dr Saravanan.
-  5. How to reach Dr Rekha?
+  1. Where is Professor Poongodi's cabin?
+  2. How can I contact Dr Vinodha?
+  3. Where to find Dr Amos Bortiew?
+  4. Cabin of Dr Jeno Lovesum.
+  5. Where is Dr Kukatlapalli's cabin?
 * **Rules**:
   * Identify requests to find a professor's cabin location, room number, or email contact.
   * Dynamically extract the faculty member's name using lazy matching and named capturing group `(?P<faculty>[a-zA-Z\s]+?)`.
-  * Search the faculty directory in the knowledge base and return the matching cabin location, office floor, and phone extension.
+  * Search the faculty directory and subjects database in the knowledge base and return the matching cabin location, office floor, or lab venue.
 * **Regular Expressions**:
   ```python
   r'\b(?:where\s+is|cabin\s+of|contact|reach|find)\s+(?:prof(?:essor)?|dr\.?)\s*(?P<faculty>[a-zA-Z\s]+?)(?:\'s|\s+cabin|\s+contact|\?|$)\b'

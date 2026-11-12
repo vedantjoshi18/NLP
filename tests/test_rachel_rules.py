@@ -23,7 +23,10 @@ class TestRachelRules(unittest.TestCase):
     def test_q18_subject_faculty(self):
         resp_ai = match_rachel_rule("who teaches ai", KNOWLEDGE_BASE)
         self.assertIsNotNone(resp_ai)
-        self.assertIn("Dr. K. Saravanan", resp_ai)
+        self.assertIn("Dr. Amos Bortiew", resp_ai)
+        resp_nlp = match_rachel_rule("who teaches nlp", KNOWLEDGE_BASE)
+        self.assertIsNotNone(resp_nlp)
+        self.assertIn("Dr. D Vinodha", resp_nlp)
         resp_dbms = match_rachel_rule("which faculty handles dbms", KNOWLEDGE_BASE)
         self.assertIsNotNone(resp_dbms)
         self.assertIn("Prof. Deepa V.", resp_dbms)

@@ -8,7 +8,7 @@ class TestSasmitaRules(unittest.TestCase):
         for q in ["where is our classroom", "which room is our class in", "tell me our class location"]:
             resp = match_sasmita_rule(q, KNOWLEDGE_BASE)
             self.assertIsNotNone(resp, f"Query '{q}' failed to match Q1")
-            self.assertIn("Room 412", resp)
+            self.assertIn("Room 312", resp)
 
     def test_q5_timetable(self):
         resp_full = match_sasmita_rule("what is our timetable", KNOWLEDGE_BASE)
@@ -16,7 +16,7 @@ class TestSasmitaRules(unittest.TestCase):
         self.assertIn("Monday", resp_full)
         resp_mon = match_sasmita_rule("show monday schedule", KNOWLEDGE_BASE)
         self.assertIsNotNone(resp_mon)
-        self.assertIn("09:00 AI", resp_mon)
+        self.assertIn("Deep Learning", resp_mon)
 
     def test_q8_open_electives(self):
         resp = match_sasmita_rule("what are the open electives", KNOWLEDGE_BASE)

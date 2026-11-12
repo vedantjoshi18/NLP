@@ -25,7 +25,13 @@ def handle_faculty_location(match: re.Match, kb: Dict[str, Any]) -> str:
     # Search subjects
     for subj_code, data in kb["subjects"].items():
         if any(part in data["faculty"].lower() for part in faculty_query.split()):
-            return f"🏢 [Faculty Contact]\n{data['faculty']} (Faculty for {data['full_name']})\nCabin: Block II Faculty Room\nSubject: {data['full_name']} ({subj_code.upper()})"
+            lab_info = f" | Lab: {data['lab']}" if "lab" in data else ""
+            return f"🏢 [Faculty Contact]\n{data['faculty']} (Faculty for {data['full_name']})\nLocation: Department Faculty Room, GF-B3{lab_info}\nSubject: {data['full_name']} ({subj_code.upper()})"
+    
+    # Search mentors
+    for g in kb.get("mentors", {}).get("groups", []):
+        if any(part in g["mentor"].lower() for part in faculty_query.split()):
+            return f"🏢 [Faculty Contact]\n{g['mentor']} (Mentor)\nCabin: {g['cabin']}"
     
     return f"Faculty '{faculty_query.title()}' not found in current semester faculty directory."
 
